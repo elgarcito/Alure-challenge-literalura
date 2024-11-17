@@ -11,4 +11,84 @@ public class Libro {
     private List<String> idiomas;
     private boolean derechosDeAutor;
     private Long cantidadDeDescargas;
+
+    public Libro() {}
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public List<Autor> getAutores() {
+        return autores;
+    }
+
+    public void setAutores(List<Autor> autores) {
+        this.autores = autores;
+    }
+
+    public List<String> getTraductores() {
+        return traductores;
+    }
+
+    public void setTraductores(List<String> traductores) {
+        this.traductores = traductores;
+    }
+
+    public List<String> getTemas() {
+        return temas;
+    }
+
+    public void setTemas(List<String> temas) {
+        this.temas = temas;
+    }
+
+    public List<String> getEstanterias() {
+        return estanterias;
+    }
+
+    public void setEstanterias(List<String> estanterias) {
+        this.estanterias = estanterias;
+    }
+
+    public List<String> getIdiomas() {
+        return idiomas;
+    }
+
+    public void setIdiomas(List<String> idiomas) {
+        this.idiomas = idiomas;
+    }
+
+    public boolean isDerechosDeAutor() {
+        return derechosDeAutor;
+    }
+
+    public void setDerechosDeAutor(boolean derechosDeAutor) {
+        this.derechosDeAutor = derechosDeAutor;
+    }
+
+    public Long getCantidadDeDescargas() {
+        return cantidadDeDescargas;
+    }
+
+    public void setCantidadDeDescargas(Long cantidadDeDescargas) {
+        this.cantidadDeDescargas = cantidadDeDescargas;
+    }
+
+    @Override
+    public String toString() {
+        return "Libro{" +
+                "titulo='" + titulo + '\'' +
+                ", autores=" + autores +
+                ", traductores=" + traductores +
+                ", temas=" + temas +
+                ", estanterias=" + estanterias +
+                ", idiomas=" + idiomas +
+                ", derechosDeAutor=" + derechosDeAutor +
+                ", cantidadDeDescargas=" + cantidadDeDescargas +
+                '}';
+    }
 }
