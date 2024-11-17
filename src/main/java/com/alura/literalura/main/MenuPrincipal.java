@@ -1,6 +1,9 @@
 package com.alura.literalura.main;
 
 import com.alura.literalura.model.*;
+import com.alura.literalura.repository.AutorRepository;
+import com.alura.literalura.repository.LibroRepository;
+import com.alura.literalura.repository.TraductorRepository;
 import com.alura.literalura.service.ConsumoAPI;
 import com.alura.literalura.service.ConvierteDatos;
 
@@ -9,8 +12,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MenuPrincipal {
+    private LibroRepository libroRepository;
+    private AutorRepository autorRepository;
+    private TraductorRepository traductorRepository;
+
+
     private Scanner teclado=new Scanner(System.in);
     private ConsumoAPI consumoAPI =new ConsumoAPI();
     private final String URL_BASE="https://gutendex.com/books/";
@@ -19,6 +28,11 @@ public class MenuPrincipal {
     private List<Autor> listaDeAutores=new ArrayList<>();
     private List<Traductor> listaDeTraductores=new ArrayList<>();
 
+    public MenuPrincipal(LibroRepository libroRepository,AutorRepository autorRepository,TraductorRepository traductorRepository) {
+        this.libroRepository=libroRepository;
+        this.autorRepository=autorRepository;
+        this.traductorRepository=traductorRepository;
+    }
 
     public void muestraElMenu() {
         var opcion = -1;
@@ -197,33 +211,44 @@ public class MenuPrincipal {
     }
 
     private void agregarUnLibroALaBaseDeDatos(DatosAPIResponse datosAPIResponse,int opcionElegida){
+       List<Autor> listaDeAutoresEncontrados = new ArrayList<>();
+       List<Traductor> listaDeTraductorEncontrado=new ArrayList<>();
+       List<Libro> listaDeLibrosEncontrados=new ArrayList<>();
         datosAPIResponse.results().stream()
                 .skip(opcionElegida-1)
                 .findFirst()
                 // .forEach(book->{
                 .ifPresent(book->{
-                    Libro nuevoLibro= new Libro(book);
-                    listaDeLibros.add(nuevoLibro);
+
+
                     book.autores().stream()
                             .filter(Objects::nonNull)
                             .forEach(autor->{
                                 Autor nuevoAutor=new Autor(autor);
-                                listaDeAutores.add(nuevoAutor);
+                                listaDeAutoresEncontrados.add(nuevoAutor);
+//                                listaDeAutores.add(nuevoAutor);
                             });
                     book.traductores().stream()
                             .filter(Objects::nonNull)
                             .forEach(traductor->{
                                 Traductor nuevoTraductor=new Traductor(traductor);
-                                listaDeTraductores.add(nuevoTraductor);
+                                listaDeTraductorEncontrado.add(nuevoTraductor);
+//                                listaDeTraductores.add(nuevoTraductor);
                             });
+                    Libro nuevoLibro= new Libro(book);
+                    listaDeLibrosEncontrados.add(nuevoLibro);
+//                    listaDeLibros.add(nuevoLibro);
                 });
+        listaDeAutoresEncontrados.forEach(autor->autorRepository.save(autor));
+        listaDeTraductorEncontrado.forEach(traductor->traductorRepository.save(traductor));
+        listaDeLibrosEncontrados.forEach(libro -> libroRepository.save(libro));
     }
 
     private void agregarMultiplesLibrosALaBaseDeDatos(DatosAPIResponse datosAPIResponse){
         datosAPIResponse.results().stream()
                 .forEach(book->{
                     Libro nuevoLibro= new Libro(book);
-                    listaDeLibros.add(nuevoLibro);
+                    libroRepository.save(nuevoLibro);
                     book.autores().stream()
                             .filter(Objects::nonNull)
                             .forEach(autor->{

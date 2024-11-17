@@ -15,9 +15,9 @@ public class Libro {
     private int id;
     private int apiId;
     private String titulo;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Autor> autores;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Traductor> traductores;
     private List<String> temas;
     private List<String> estanterias;
