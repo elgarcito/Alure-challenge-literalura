@@ -3,42 +3,42 @@ package com.alura.literalura.model;
 import java.time.LocalDate;
 
 public class Autor {
-    private String nombre;
-    private LocalDate fechaDeNacimiento;
-    private LocalDate fechaDeFallecimiento;
+    private String nombreAutor;
+    private LocalDate fechaDeNacimientoAutor;
+    private LocalDate fechaDeFallecimientoAutor;
 
     public Autor() {}
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreAutor() {
+        return nombreAutor;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreAutor(String nombreAutor) {
+        this.nombreAutor = nombreAutor;
     }
 
-    public LocalDate getFechaDeNacimiento() {
-        return fechaDeNacimiento;
+    public LocalDate getFechaDeNacimientoAutor() {
+        return fechaDeNacimientoAutor;
     }
 
-    public void setFechaDeNacimiento(LocalDate fechaDeNacimiento) {
-        this.fechaDeNacimiento = fechaDeNacimiento;
+    public void setFechaDeNacimientoAutor(LocalDate fechaDeNacimientoAutor) {
+        this.fechaDeNacimientoAutor = fechaDeNacimientoAutor;
     }
 
-    public LocalDate getFechaDeFallecimiento() {
-        return fechaDeFallecimiento;
+    public LocalDate getFechaDeFallecimientoAutor() {
+        return fechaDeFallecimientoAutor;
     }
 
-    public void setFechaDeFallecimiento(LocalDate fechaDeFallecimiento) {
-        this.fechaDeFallecimiento = fechaDeFallecimiento;
+    public void setFechaDeFallecimientoAutor(LocalDate fechaDeFallecimientoAutor) {
+        this.fechaDeFallecimientoAutor = fechaDeFallecimientoAutor;
     }
 
     @Override
     public String toString() {
         return "Autor{" +
-                "nombre='" + nombre + '\'' +
-                ", fechaDeNacimiento=" + fechaDeNacimiento +
-                ", fechaDeFallecimiento=" + fechaDeFallecimiento +
+                "nombre='" + nombreAutor + '\'' +
+                ", fechaDeNacimiento=" + fechaDeNacimientoAutor +
+                ", fechaDeFallecimiento=" + fechaDeFallecimientoAutor +
                 '}';
     }
 }
