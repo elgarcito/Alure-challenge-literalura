@@ -1,7 +1,6 @@
 package com.alura.literalura.main;
 
-import com.alura.literalura.model.DatosAPIResponse;
-import com.alura.literalura.model.DatosLibro;
+import com.alura.literalura.model.*;
 import com.alura.literalura.service.ConsumoAPI;
 import com.alura.literalura.service.ConvierteDatos;
 
@@ -15,21 +14,24 @@ public class MenuPrincipal {
     private ConsumoAPI consumoAPI =new ConsumoAPI();
     private final String URL_BASE="https://gutendex.com/books/";
     private ConvierteDatos conversor=new ConvierteDatos();
-    private List<DatosLibro> listaDeLibros =new ArrayList<>();
+    private List<Libro> listaDeLibros =new ArrayList<>();
+    private List<Autor> listaDeAutores=new ArrayList<>();
+    private List<Traductor> listaDeTraductores=new ArrayList<>();
 
 
     public void muestraElMenu() {
         var opcion = -1;
         while (opcion != 0) {
             var menu = """
-                    1 - Buscar libro por titulo registraos
+                    1 - Buscar libro por titulo registrados
                     2 - Buscar libros registrados
                     3 - Listar autores registrados
                     4 - Buscar autores vivos en un determinado año
                     5 - Listar libros registrados por idioma
                     7 - Agregar un libro a la base de datos
                     8 - Ver todos los libros guardados
-                    6 - Salir
+                    9 - Ver todos los traductores guardados
+                   
                                   
                     0 - Salir
                     """;
@@ -46,7 +48,7 @@ public class MenuPrincipal {
 //                    buscarEpisodioPorSerie();
                     break;
                 case 3:
-//                    mostrarSeriesBuscadas();
+                    listarAutoresRegistrados();
                     break;
                 case 4:
                     buscarAutoresVivosEnUnDeterminadoAno();
@@ -59,11 +61,12 @@ public class MenuPrincipal {
                     break;
                 case 7:
                     agregarLibroALaBaseDeDatos();
+                    break;
                 case 8:
                     verTodosLosLibrosGuardados();
                     break;
                 case 9:
-//                    buscarTop5Episodios();
+                   listarTraductoresRegistrados();
                     break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
@@ -75,6 +78,8 @@ public class MenuPrincipal {
         }
 
     }
+
+
 
 
     private DatosLibro agregarLibroALaBaseDeDatos() {
@@ -94,7 +99,7 @@ public class MenuPrincipal {
             int index = contador.incrementAndGet();
             System.out.println("Opcion: "+index+" "+book+"\n");
         });
-        System.out.println(contador);
+
         System.out.println("Escriba el numero de la opcion que desea guardar en la base de datos"+"\n");
         System.out.println("Si desea cancelar la operacion seleccione 0");
 
@@ -103,15 +108,41 @@ public class MenuPrincipal {
                 System.out.println("Eligio no guardar ningun libro en la base de datos, muchas gracias");
                 return null;
             } else {
-                listaDeLibros.add(datosAPIResponse.results().get(opcionElegida-1));
-                System.out.println(listaDeLibros.get(0));
+
+//                listaDeLibros.add(datosAPIResponse.results().get(opcionElegida-1));
+//              Libro nuevoLibro=new Libro(datosAPIResponse.results().get(opcionElegida-1));
+//              listaDeLibros.add(nuevoLibro);
+//              if (!nuevoLibro.getAutores().isEmpty()){
+//                  listaDeAutores.addAll(nuevoLibro.getAutores());
+//              }
+//              if (!nuevoLibro.getTraductores().isEmpty()){
+//                  listaDeTraductores.addAll(nuevoLibro.getTraductores());
+//              }
+                datosAPIResponse.results().stream()
+                        .skip(opcionElegida-1)
+                        .findFirst()
+                       // .forEach(book->{
+                        .ifPresent(book->{
+                   Libro nuevoLibro= new Libro(book);
+                   listaDeLibros.add(nuevoLibro);
+                    book.autores().stream()
+                            .forEach(autor->{
+                                Autor nuevoAutor=new Autor(autor);
+                                listaDeAutores.add(nuevoAutor);
+                            });
+                   book.traductores().stream()
+                           .forEach(traductor->{
+                               Traductor nuevoTraductor=new Traductor(traductor);
+                               listaDeTraductores.add(nuevoTraductor);
+                           });
+                });
             }
         return null;
 
     }
 
     private void verTodosLosLibrosGuardados() {
-        listaDeLibros.forEach(book-> System.out.println(book+"\n"));
+        listaDeLibros.forEach(book-> System.out.println(book.toString()));
     }
 
     private void buscarAutoresVivosEnUnDeterminadoAno() {
@@ -125,14 +156,26 @@ public class MenuPrincipal {
             System.out.println("No hay autores registrados entre esas fechas");
             return;
         }
-        AtomicInteger contador = new AtomicInteger(0);
-
         System.out.println("Resultados encontrados: "+"\n");
-        datosAPIResponse.results().stream().forEach(book-> {
-            int index = contador.incrementAndGet();
-            System.out.println("Opcion: "+index+" "+book+"\n");
-        });
+//        datosAPIResponse.results().stream().forEach(book-> System.out.println(book+"\n"));
 
+//        datosAPIResponse.results().stream().forEach(book->{
+          //  book.autores().stream().forEach(autor->listaDeAutores.add(autor));
+//            listaDeAutores.add(book.autores().get(0));//Elijo solo el primer autor segun consigna
+//        });
+        datosAPIResponse.results().stream().map(dBook->new Libro(dBook))
+                .forEach(book-> System.out.println(book.toString()));
+
+
+
+    }
+
+    private void listarAutoresRegistrados() {
+        listaDeAutores.stream().forEach(autor-> System.out.println(autor));
+    }
+
+    private void listarTraductoresRegistrados() {
+        listaDeTraductores.stream().forEach(traductor-> System.out.println(traductor));
     }
 
 
@@ -158,7 +201,7 @@ public class MenuPrincipal {
         boolean valido = false;
 
         // Expresión regular para validar que solo contenga letras y números
-        String patron = "^[a-zA-Z0-9]+$";
+        String patron = "^[a-zA-Z0-9 ]+$";
 
         while (!valido) {
             System.out.print("Por favor, solo letras y números, sin caracteres especiales: ");
