@@ -2,10 +2,13 @@ package com.alura.literalura.model;
 
 import java.util.List;
 
+
 public class Libro {
+    private int id;
+    private int apiId;
     private String titulo;
     private List<Autor> autores;
-    private List<String> traductores;
+    private List<Traductor> traductores;
     private List<String> temas;
     private List<String> estanterias;
     private List<String> idiomas;
@@ -13,6 +16,14 @@ public class Libro {
     private Long cantidadDeDescargas;
 
     public Libro() {}
+
+    public int getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(int apiId) {
+        this.apiId = apiId;
+    }
 
     public String getTitulo() {
         return titulo;
@@ -30,11 +41,11 @@ public class Libro {
         this.autores = autores;
     }
 
-    public List<String> getTraductores() {
+    public List<Traductor> getTraductores() {
         return traductores;
     }
 
-    public void setTraductores(List<String> traductores) {
+    public void setTraductores(List<Traductor> traductores) {
         this.traductores = traductores;
     }
 
@@ -81,7 +92,8 @@ public class Libro {
     @Override
     public String toString() {
         return "Libro{" +
-                "titulo='" + titulo + '\'' +
+                "apiId=" + apiId +
+                ", titulo='" + titulo + '\'' +
                 ", autores=" + autores +
                 ", traductores=" + traductores +
                 ", temas=" + temas +
