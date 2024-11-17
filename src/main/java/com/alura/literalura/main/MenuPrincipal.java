@@ -5,7 +5,7 @@ import com.alura.literalura.service.ConvierteDatos;
 
 import java.util.Scanner;
 
-public class Menu {
+public class MenuPrincipal {
     private Scanner teclado=new Scanner(System.in);
     private ConsumoAPI consumoAPI =new ConsumoAPI();
     private final String URL_BASE="https://gutendex.com";
