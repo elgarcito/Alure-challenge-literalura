@@ -4,10 +4,16 @@ import java.time.LocalDate;
 
 public class Autor {
     private String nombreAutor;
-    private LocalDate fechaDeNacimientoAutor;
-    private LocalDate fechaDeFallecimientoAutor;
+    private int anoDeNacimientoAutor;
+    private int anoDeFallecimientoAutor;
 
     public Autor() {}
+
+    public Autor(DatosAutor datosAutor) {
+        this.nombreAutor = datosAutor.nombre();
+        this.anoDeNacimientoAutor = datosAutor.fechaDeNacimiento();
+        this.anoDeFallecimientoAutor = datosAutor.fechaDeFallecimiento();
+    }
 
     public String getNombreAutor() {
         return nombreAutor;
@@ -17,28 +23,28 @@ public class Autor {
         this.nombreAutor = nombreAutor;
     }
 
-    public LocalDate getFechaDeNacimientoAutor() {
-        return fechaDeNacimientoAutor;
+    public int getAnoDeFallecimientoAutor() {
+        return anoDeFallecimientoAutor;
     }
 
-    public void setFechaDeNacimientoAutor(LocalDate fechaDeNacimientoAutor) {
-        this.fechaDeNacimientoAutor = fechaDeNacimientoAutor;
+    public void setAnoDeFallecimientoAutor(int anoDeFallecimientoAutor) {
+        this.anoDeFallecimientoAutor = anoDeFallecimientoAutor;
     }
 
-    public LocalDate getFechaDeFallecimientoAutor() {
-        return fechaDeFallecimientoAutor;
+    public int getAnoDeNacimientoAutor() {
+        return anoDeNacimientoAutor;
     }
 
-    public void setFechaDeFallecimientoAutor(LocalDate fechaDeFallecimientoAutor) {
-        this.fechaDeFallecimientoAutor = fechaDeFallecimientoAutor;
+    public void setAnoDeNacimientoAutor(int anoDeNacimientoAutor) {
+        this.anoDeNacimientoAutor = anoDeNacimientoAutor;
     }
 
     @Override
     public String toString() {
         return "Autor{" +
                 "nombre='" + nombreAutor + '\'' +
-                ", fechaDeNacimiento=" + fechaDeNacimientoAutor +
-                ", fechaDeFallecimiento=" + fechaDeFallecimientoAutor +
+                ", fechaDeNacimiento=" + anoDeNacimientoAutor +
+                ", fechaDeFallecimiento=" + anoDeFallecimientoAutor +
                 '}';
     }
 }

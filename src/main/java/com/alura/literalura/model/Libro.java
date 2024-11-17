@@ -1,6 +1,9 @@
 package com.alura.literalura.model;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 public class Libro {
@@ -16,6 +19,22 @@ public class Libro {
     private Long cantidadDeDescargas;
 
     public Libro() {}
+
+    public Libro(DatosLibro datosLibro) {
+        this.titulo = datosLibro.titulo();
+        this.autores = datosLibro.autores()
+                .stream().map(a->new Autor(a))
+                .collect(Collectors.toList());
+//        this.traductores = datosLibro.traductores();
+        this.traductores = datosLibro.traductores()
+                .stream().map(t->new Traductor(t))
+                .collect(Collectors.toList());
+        this.temas = datosLibro.temas();
+        this.estanterias = datosLibro.estanterias();
+        this.idiomas = datosLibro.idiomas();
+        this.derechosDeAutor = datosLibro.derechosAutor();
+        this.cantidadDeDescargas = datosLibro.cantidadDescargas();
+    }
 
     public int getApiId() {
         return apiId;
@@ -91,16 +110,15 @@ public class Libro {
 
     @Override
     public String toString() {
-        return "Libro{" +
-                "apiId=" + apiId +
-                ", titulo='" + titulo + '\'' +
-                ", autores=" + autores +
-                ", traductores=" + traductores +
-                ", temas=" + temas +
-                ", estanterias=" + estanterias +
-                ", idiomas=" + idiomas +
-                ", derechosDeAutor=" + derechosDeAutor +
-                ", cantidadDeDescargas=" + cantidadDeDescargas +
-                '}';
+        return "Libro{\n" +
+                " \"titulo\": \"" + titulo + "\",\n"
+                + " \"autores\": " + autores + ",\n"
+                + " \"traductores\": " + traductores + ",\n" +
+                " \"temas\": " + temas + ",\n"
+                + " \"estanterias\": " + estanterias + ",\n"
+                + " \"idiomas\": " + idiomas + ",\n"
+                + " \"derechosDeAutor\": " + derechosDeAutor
+                + ",\n" + " \"cantidadDeDescargas\": " + cantidadDeDescargas
+                + "\n" + "}";
     }
 }
