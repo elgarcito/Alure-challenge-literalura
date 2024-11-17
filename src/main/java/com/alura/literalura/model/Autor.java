@@ -3,6 +3,8 @@ package com.alura.literalura.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
+
 @Entity
 @Table(name="autor")
 public class Autor {
@@ -12,6 +14,8 @@ public class Autor {
     private String nombreAutor;
     private int anoDeNacimientoAutor;
     private int anoDeFallecimientoAutor;
+    @ManyToMany
+    private List<Libro> librosPorAutor;
 
     public Autor() {}
 
@@ -51,6 +55,14 @@ public class Autor {
 
     public void setAnoDeNacimientoAutor(int anoDeNacimientoAutor) {
         this.anoDeNacimientoAutor = anoDeNacimientoAutor;
+    }
+
+    public List<Libro> getLibrosPorAutor() {
+        return librosPorAutor;
+    }
+
+    public void setLibrosPorAutor(List<Libro> librosPorAutor) {
+        this.librosPorAutor = librosPorAutor;
     }
 
     @Override

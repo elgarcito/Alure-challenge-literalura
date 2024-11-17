@@ -15,7 +15,9 @@ public class Libro {
     private int id;
     private int apiId;
     private String titulo;
+    @ManyToMany
     private List<Autor> autores;
+    @ManyToMany
     private List<Traductor> traductores;
     private List<String> temas;
     private List<String> estanterias;
