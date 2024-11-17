@@ -49,7 +49,7 @@ public class MenuPrincipal {
 //                    mostrarSeriesBuscadas();
                     break;
                 case 4:
-//                    buscarSeriesPorTitulo();
+                    buscarAutoresVivosEnUnDeterminadoAno();
                     break;
                 case 5:
 //                    buscarTop5Series();
@@ -75,7 +75,6 @@ public class MenuPrincipal {
         }
 
     }
-
 
 
     private DatosLibro agregarLibroALaBaseDeDatos() {
@@ -114,6 +113,28 @@ public class MenuPrincipal {
     private void verTodosLosLibrosGuardados() {
         listaDeLibros.forEach(book-> System.out.println(book+"\n"));
     }
+
+    private void buscarAutoresVivosEnUnDeterminadoAno() {
+        System.out.println("Escribe el titulo del año de inicio que deseas buscar");
+        var anoDeInicio = elegirOpcionNumericaCorrecta();
+        System.out.println("Escribe el titulo del año de finalizacion que deseas buscar");
+        var anoFinalizacion = elegirOpcionNumericaCorrecta();
+        var json = consumoAPI.obtenerDatos(URL_BASE + "?author_year_start=" + anoDeInicio + "&author_year_end=" + anoFinalizacion);
+        DatosAPIResponse datosAPIResponse = conversor.obtenerDatos(json, DatosAPIResponse.class);
+        if (datosAPIResponse.results().isEmpty()) {
+            System.out.println("No hay autores registrados entre esas fechas");
+            return;
+        }
+        AtomicInteger contador = new AtomicInteger(0);
+
+        System.out.println("Resultados encontrados: "+"\n");
+        datosAPIResponse.results().stream().forEach(book-> {
+            int index = contador.incrementAndGet();
+            System.out.println("Opcion: "+index+" "+book+"\n");
+        });
+
+    }
+
 
     private int elegirOpcionNumericaCorrecta(){
         int numeroEntero = 0;
