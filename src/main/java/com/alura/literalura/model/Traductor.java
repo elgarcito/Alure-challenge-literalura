@@ -1,8 +1,14 @@
 package com.alura.literalura.model;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+@Entity
+@Table(name="traductor")
 public class Traductor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String nombreTraductor;
     private int fechaDeNacimientoTraductor;
     private int fechaDeFallecimientoTraductor;
@@ -13,6 +19,14 @@ public class Traductor {
         this.nombreTraductor = datosTraductor.nombreTraductor();
         this.fechaDeNacimientoTraductor = datosTraductor.fechaDeNacimientoTraductor();
         this.fechaDeFallecimientoTraductor = datosTraductor.fechaDeFallecimientoTraductor();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombreTraductor() {

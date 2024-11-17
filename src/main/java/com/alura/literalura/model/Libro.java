@@ -1,12 +1,17 @@
 package com.alura.literalura.model;
 
+import jakarta.persistence.*;
+
 import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
+@Entity
+@Table(name="libro")
 public class Libro {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int apiId;
     private String titulo;
@@ -34,6 +39,14 @@ public class Libro {
         this.idiomas = datosLibro.idiomas();
         this.derechosDeAutor = datosLibro.derechosAutor();
         this.cantidadDeDescargas = datosLibro.cantidadDescargas();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getApiId() {

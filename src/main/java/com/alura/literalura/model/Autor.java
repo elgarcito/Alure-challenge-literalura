@@ -1,8 +1,14 @@
 package com.alura.literalura.model;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+@Entity
+@Table(name="autor")
 public class Autor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nombreAutor;
     private int anoDeNacimientoAutor;
     private int anoDeFallecimientoAutor;
@@ -13,6 +19,14 @@ public class Autor {
         this.nombreAutor = datosAutor.nombre();
         this.anoDeNacimientoAutor = datosAutor.fechaDeNacimiento();
         this.anoDeFallecimientoAutor = datosAutor.fechaDeFallecimiento();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombreAutor() {
