@@ -6,6 +6,7 @@ import com.alura.literalura.service.ConvierteDatos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -86,20 +87,17 @@ public class MenuPrincipal {
         System.out.println("Escribe el titulo del libro que deseas buscar");
         var nombreLibro = escribirBusquedaCorrectamente();
         var json = consumoAPI.obtenerDatos(URL_BASE + "?search="+nombreLibro.replace(" ", "+"));
-        //System.out.println(json);
         DatosAPIResponse datosAPIResponse=conversor.obtenerDatos(json, DatosAPIResponse.class);
         if (datosAPIResponse.results().isEmpty()){
             System.out.println("No se encuentra informacion disponible sobre el libro buscado");
             return null;
         }
         AtomicInteger contador = new AtomicInteger(0);
-
         System.out.println("Resultados encontrados: "+"\n");
         datosAPIResponse.results().stream().forEach(book-> {
             int index = contador.incrementAndGet();
             System.out.println("Opcion: "+index+" "+book+"\n");
         });
-
         System.out.println("Escriba el numero de la opcion que desea guardar en la base de datos"+"\n");
         System.out.println("Si desea cancelar la operacion seleccione 0");
 
@@ -108,34 +106,7 @@ public class MenuPrincipal {
                 System.out.println("Eligio no guardar ningun libro en la base de datos, muchas gracias");
                 return null;
             } else {
-
-//                listaDeLibros.add(datosAPIResponse.results().get(opcionElegida-1));
-//              Libro nuevoLibro=new Libro(datosAPIResponse.results().get(opcionElegida-1));
-//              listaDeLibros.add(nuevoLibro);
-//              if (!nuevoLibro.getAutores().isEmpty()){
-//                  listaDeAutores.addAll(nuevoLibro.getAutores());
-//              }
-//              if (!nuevoLibro.getTraductores().isEmpty()){
-//                  listaDeTraductores.addAll(nuevoLibro.getTraductores());
-//              }
-                datosAPIResponse.results().stream()
-                        .skip(opcionElegida-1)
-                        .findFirst()
-                       // .forEach(book->{
-                        .ifPresent(book->{
-                   Libro nuevoLibro= new Libro(book);
-                   listaDeLibros.add(nuevoLibro);
-                    book.autores().stream()
-                            .forEach(autor->{
-                                Autor nuevoAutor=new Autor(autor);
-                                listaDeAutores.add(nuevoAutor);
-                            });
-                   book.traductores().stream()
-                           .forEach(traductor->{
-                               Traductor nuevoTraductor=new Traductor(traductor);
-                               listaDeTraductores.add(nuevoTraductor);
-                           });
-                });
+                agregarUnLibroALaBaseDeDatos(datosAPIResponse,opcionElegida);
             }
         return null;
 
@@ -165,6 +136,15 @@ public class MenuPrincipal {
 //        });
         datosAPIResponse.results().stream().map(dBook->new Libro(dBook))
                 .forEach(book-> System.out.println(book.toString()));
+
+        System.out.println("¿Desea guardar la seleccion en la base de datos? 1-Si 0-No"+"\n");
+
+        int opcionElegida= elegirOpcionNumericaCorrecta();
+        if (opcionElegida == 0) {
+            System.out.println("Eligio no guardar ningun libro en la base de datos, muchas gracias");
+        } else {
+            agregarMultiplesLibrosALaBaseDeDatos(datosAPIResponse);
+        }
 
 
 
@@ -214,6 +194,49 @@ public class MenuPrincipal {
             }
         }
         return entrada;
+    }
+
+    private void agregarUnLibroALaBaseDeDatos(DatosAPIResponse datosAPIResponse,int opcionElegida){
+        datosAPIResponse.results().stream()
+                .skip(opcionElegida-1)
+                .findFirst()
+                // .forEach(book->{
+                .ifPresent(book->{
+                    Libro nuevoLibro= new Libro(book);
+                    listaDeLibros.add(nuevoLibro);
+                    book.autores().stream()
+                            .filter(Objects::nonNull)
+                            .forEach(autor->{
+                                Autor nuevoAutor=new Autor(autor);
+                                listaDeAutores.add(nuevoAutor);
+                            });
+                    book.traductores().stream()
+                            .filter(Objects::nonNull)
+                            .forEach(traductor->{
+                                Traductor nuevoTraductor=new Traductor(traductor);
+                                listaDeTraductores.add(nuevoTraductor);
+                            });
+                });
+    }
+
+    private void agregarMultiplesLibrosALaBaseDeDatos(DatosAPIResponse datosAPIResponse){
+        datosAPIResponse.results().stream()
+                .forEach(book->{
+                    Libro nuevoLibro= new Libro(book);
+                    listaDeLibros.add(nuevoLibro);
+                    book.autores().stream()
+                            .filter(Objects::nonNull)
+                            .forEach(autor->{
+                                Autor nuevoAutor=new Autor(autor);
+                                listaDeAutores.add(nuevoAutor);
+                            });
+                    book.traductores().stream()
+                            .filter(Objects::nonNull)
+                            .forEach(traductor->{
+                                Traductor nuevoTraductor=new Traductor(traductor);
+                                listaDeTraductores.add(nuevoTraductor);
+                            });
+                });
     }
 }
 
