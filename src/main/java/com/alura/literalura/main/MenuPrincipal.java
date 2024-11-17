@@ -6,6 +6,7 @@ import com.alura.literalura.service.ConsumoAPI;
 import com.alura.literalura.service.ConvierteDatos;
 
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MenuPrincipal {
     private Scanner teclado=new Scanner(System.in);
@@ -75,9 +76,51 @@ public class MenuPrincipal {
         System.out.println("Escribe el titulo del libro que deseas buscar");
         var nombreLibro = teclado.nextLine();
         var json = consumoAPI.obtenerDatos(URL_BASE + "?search="+nombreLibro.replace(" ", "+"));
-        System.out.println(json);
+        //System.out.println(json);
         DatosAPIResponse datosAPIResponse=conversor.obtenerDatos(json, DatosAPIResponse.class);
-        System.out.println(datosAPIResponse.results());
+        if (datosAPIResponse.results().isEmpty()){
+            System.out.println("No se encuentra informacion disponible sobre el libro buscado");
+            return null;
+        }
+        AtomicInteger contador = new AtomicInteger(0);
+
+        System.out.println("Resultados encontrados: "+"\n");
+        datosAPIResponse.results().stream().forEach(book-> {
+            int index = contador.incrementAndGet();
+            System.out.println("Opcion: "+index+" "+book+"\n");
+        });
+        System.out.println(contador);
+        System.out.println("Escriba el numero de la opcion que desea guardar en la base de datos"+"\n");
+        System.out.println("Si desea cancelar la operacion seleccione 0");
+
+       int opcionElegida= elegirOpcionCorrecta();
+            if (opcionElegida == 0) {
+                System.out.println("Eligio no guardar ningun libro en la base de datos, muchas gracias");
+                return null;
+            } else {
+                System.out.println(datosAPIResponse.results().get(opcionElegida-1) + "\n");
+            }
+
+       // System.out.println("Número entero ingresado correctamente: " + numeroEntero);
         return null;
+
+    }
+
+    private int elegirOpcionCorrecta(){
+        int numeroEntero = 0;
+        boolean valido = false;
+
+        while (!valido) {
+            System.out.print("Por favor,recuerde ingresar solo números enteros: ");
+            String entrada = teclado.nextLine();
+            try {
+                numeroEntero = Integer.parseInt(entrada);
+                valido = true; // Si la conversión fue exitosa, se marca como válido
+            } catch (NumberFormatException e) {
+                System.out.println("Error: eso no es un número entero. Inténtalo de nuevo.");
+            }
+        }
+        return numeroEntero;
     }
 }
+
