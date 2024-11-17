@@ -5,6 +5,8 @@ import com.alura.literalura.model.DatosLibro;
 import com.alura.literalura.service.ConsumoAPI;
 import com.alura.literalura.service.ConvierteDatos;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -13,6 +15,7 @@ public class MenuPrincipal {
     private ConsumoAPI consumoAPI =new ConsumoAPI();
     private final String URL_BASE="https://gutendex.com/books/";
     private ConvierteDatos conversor=new ConvierteDatos();
+    private List<DatosLibro> listaDeLibros =new ArrayList<>();
 
 
     public void muestraElMenu() {
@@ -25,6 +28,7 @@ public class MenuPrincipal {
                     4 - Buscar autores vivos en un determinado año
                     5 - Listar libros registrados por idioma
                     7 - Agregar un libro a la base de datos
+                    8 - Ver todos los libros guardados
                     6 - Salir
                                   
                     0 - Salir
@@ -56,7 +60,7 @@ public class MenuPrincipal {
                 case 7:
                     agregarLibroALaBaseDeDatos();
                 case 8:
-//                    buscarEpisodiosPorTitulo();
+                    verTodosLosLibrosGuardados();
                     break;
                 case 9:
 //                    buscarTop5Episodios();
@@ -72,9 +76,11 @@ public class MenuPrincipal {
 
     }
 
+
+
     private DatosLibro agregarLibroALaBaseDeDatos() {
         System.out.println("Escribe el titulo del libro que deseas buscar");
-        var nombreLibro = teclado.nextLine();
+        var nombreLibro = escribirBusquedaCorrectamente();
         var json = consumoAPI.obtenerDatos(URL_BASE + "?search="+nombreLibro.replace(" ", "+"));
         //System.out.println(json);
         DatosAPIResponse datosAPIResponse=conversor.obtenerDatos(json, DatosAPIResponse.class);
@@ -93,20 +99,23 @@ public class MenuPrincipal {
         System.out.println("Escriba el numero de la opcion que desea guardar en la base de datos"+"\n");
         System.out.println("Si desea cancelar la operacion seleccione 0");
 
-       int opcionElegida= elegirOpcionCorrecta();
+       int opcionElegida= elegirOpcionNumericaCorrecta();
             if (opcionElegida == 0) {
                 System.out.println("Eligio no guardar ningun libro en la base de datos, muchas gracias");
                 return null;
             } else {
-                System.out.println(datosAPIResponse.results().get(opcionElegida-1) + "\n");
+                listaDeLibros.add(datosAPIResponse.results().get(opcionElegida-1));
+                System.out.println(listaDeLibros.get(0));
             }
-
-       // System.out.println("Número entero ingresado correctamente: " + numeroEntero);
         return null;
 
     }
 
-    private int elegirOpcionCorrecta(){
+    private void verTodosLosLibrosGuardados() {
+        listaDeLibros.forEach(book-> System.out.println(book+"\n"));
+    }
+
+    private int elegirOpcionNumericaCorrecta(){
         int numeroEntero = 0;
         boolean valido = false;
 
@@ -121,6 +130,26 @@ public class MenuPrincipal {
             }
         }
         return numeroEntero;
+    }
+
+    private String escribirBusquedaCorrectamente(){
+        String entrada = "";
+        boolean valido = false;
+
+        // Expresión regular para validar que solo contenga letras y números
+        String patron = "^[a-zA-Z0-9]+$";
+
+        while (!valido) {
+            System.out.print("Por favor, solo letras y números, sin caracteres especiales: ");
+            entrada = teclado.nextLine();
+
+            if (entrada.matches(patron)) {
+                valido = true; // Si la cadena es válida, se marca como válido
+            } else {
+                System.out.println("Error: la entrada contiene caracteres no permitidos. Intenta de nuevo.");
+            }
+        }
+        return entrada;
     }
 }
 
