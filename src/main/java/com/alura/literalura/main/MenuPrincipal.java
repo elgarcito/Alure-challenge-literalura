@@ -58,8 +58,7 @@ public class MenuPrincipal {
 
             switch (opcion) {
                 case 1:
-//                    buscarSerieWeb();
-                    //buscarLibroPorTitulo();
+                    buscarLibroPorTituloEnLaBaseDeDatos();
                     break;
                 case 2:
 //                    buscarEpisodioPorSerie();
@@ -94,6 +93,12 @@ public class MenuPrincipal {
             }
         }
 
+    }
+
+    private void buscarLibroPorTituloEnLaBaseDeDatos() {
+        System.out.println("Escribe el titulo del libro que deseas buscar");
+        var nombreLibro = escribirBusquedaCorrectamente();
+        libroRepository.buscarLibroPorTitulo(nombreLibro).forEach(libro-> System.out.println(libro.toString()));
     }
 
     private void buscarAutoresVivosPorAnosEnLaBaseDeDatos() {
