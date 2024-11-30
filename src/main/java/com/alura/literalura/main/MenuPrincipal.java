@@ -44,6 +44,7 @@ public class MenuPrincipal {
                     3 - Listar autores registrados
                     4 - Buscar autores vivos en un determinado año
                     5 - Listar libros registrados por idioma
+                    6 - Buscar autores vivos en un determinado año desde la base de datos
                     7 - Agregar un libro a la base de datos
                     8 - Ver todos los libros guardados
                     9 - Ver todos los traductores guardados
@@ -73,7 +74,7 @@ public class MenuPrincipal {
                     buscarLibroPorIdioma();
                     break;
                 case 6:
-//                    buscarseriesPorCategoria();
+                    buscarAutoresVivosPorAnosEnLaBaseDeDatos();
                     break;
                 case 7:
                     agregarLibroALaBaseDeDatos();
@@ -93,6 +94,12 @@ public class MenuPrincipal {
             }
         }
 
+    }
+
+    private void buscarAutoresVivosPorAnosEnLaBaseDeDatos() {
+        System.out.println("Escribe el año de inicio que deseas buscar");
+        var anoDeInicio = elegirOpcionNumericaCorrecta();
+        autorRepository.seleccionarAutoresVivosEntreAnos(anoDeInicio).forEach(autor -> System.out.println(autor.toString()));
     }
 
     private void buscarLibroPorIdioma() {
