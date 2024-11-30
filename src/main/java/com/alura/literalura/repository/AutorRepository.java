@@ -14,4 +14,6 @@ public interface AutorRepository extends JpaRepository<Autor,Long> {
             "(ano_de_fallecimiento_autor IS NULL OR ano_de_fallecimiento_autor > :anioABuscar)" ,nativeQuery = true)
     List<Autor> seleccionarAutoresVivosEntreAnos(@Param("anioABuscar") int anioInicio);
 
+    List<Autor> findAll();
+
 }
