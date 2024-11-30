@@ -11,6 +11,7 @@ public class Traductor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(unique = true)
     private String nombreTraductor;
     private int fechaDeNacimientoTraductor;
     private int fechaDeFallecimientoTraductor;
