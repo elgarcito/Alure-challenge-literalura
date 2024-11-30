@@ -15,7 +15,7 @@ public class Autor {
     private String nombreAutor;
     private int anoDeNacimientoAutor;
     private int anoDeFallecimientoAutor;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     private List<Libro> librosPorAutor;
 
     public Autor() {}

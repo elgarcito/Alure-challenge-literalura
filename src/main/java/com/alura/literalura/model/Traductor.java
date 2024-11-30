@@ -15,7 +15,7 @@ public class Traductor {
     private String nombreTraductor;
     private int fechaDeNacimientoTraductor;
     private int fechaDeFallecimientoTraductor;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     private List<Libro> librosPorTraductor;
 
     public Traductor() {}

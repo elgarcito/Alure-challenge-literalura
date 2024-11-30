@@ -70,7 +70,7 @@ public class MenuPrincipal {
                     buscarAutoresVivosEnUnDeterminadoAno();
                     break;
                 case 5:
-//                    buscarTop5Series();
+                    buscarLibroPorIdioma();
                     break;
                 case 6:
 //                    buscarseriesPorCategoria();
@@ -95,7 +95,18 @@ public class MenuPrincipal {
 
     }
 
-
+    private void buscarLibroPorIdioma() {
+            System.out.println("Elegir opcion 1-ingles 2-español");
+            var idiomaElegido = elegirOpcionNumericaCorrecta();
+            switch (idiomaElegido){
+                case 1:
+                    libroRepository.seleccionarLibroPorIdioma("en").forEach(s -> System.out.println(s.toString()));
+                    break;
+                case 2:
+                    libroRepository.seleccionarLibroPorIdioma("es").forEach(s -> System.out.println(s.toString()));
+                    break;
+            }
+    }
 
 
     private DatosLibro agregarLibroALaBaseDeDatos() {
