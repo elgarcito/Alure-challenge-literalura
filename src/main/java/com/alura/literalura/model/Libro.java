@@ -2,22 +2,24 @@ package com.alura.literalura.model;
 
 import jakarta.persistence.*;
 
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Entity
+//@Table(name="libro",uniqueConstraints = {
+//        @UniqueConstraint(columnNames = "titulo")
+//})
 @Table(name="libro")
 public class Libro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int apiId;
+    private Long identifyer;
+    @Column(unique = true)
     private String titulo;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Autor> autores;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Traductor> traductores;
     private List<String> temas;
     private List<String> estanterias;
@@ -41,6 +43,7 @@ public class Libro {
         this.idiomas = datosLibro.idiomas();
         this.derechosDeAutor = datosLibro.derechosAutor();
         this.cantidadDeDescargas = datosLibro.cantidadDescargas();
+        this.identifyer=datosLibro.identifyer();
     }
 
     public int getId() {
@@ -51,12 +54,12 @@ public class Libro {
         this.id = id;
     }
 
-    public int getApiId() {
-        return apiId;
+    public Long getIdentifyer() {
+        return identifyer;
     }
 
-    public void setApiId(int apiId) {
-        this.apiId = apiId;
+    public void setIdentifyer(Long identifyer) {
+        this.identifyer = identifyer;
     }
 
     public String getTitulo() {
@@ -127,6 +130,7 @@ public class Libro {
     public String toString() {
         return "Libro{\n" +
                 " \"titulo\": \"" + titulo + "\",\n"
+                +" \"ID de la api\": \"" + identifyer + "\",\n"
                 + " \"autores\": " + autores + ",\n"
                 + " \"traductores\": " + traductores + ",\n" +
                 " \"temas\": " + temas + ",\n"
