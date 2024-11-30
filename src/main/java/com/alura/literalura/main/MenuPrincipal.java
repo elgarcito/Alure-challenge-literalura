@@ -6,6 +6,7 @@ import com.alura.literalura.repository.LibroRepository;
 import com.alura.literalura.repository.TraductorRepository;
 import com.alura.literalura.service.ConsumoAPI;
 import com.alura.literalura.service.ConvierteDatos;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +128,8 @@ public class MenuPrincipal {
     }
 
     private void verTodosLosLibrosGuardados() {
-        listaDeLibros.forEach(book-> System.out.println(book.toString()));
+       // listaDeLibros.forEach(book-> System.out.println(book.toString()));
+        libroRepository.findAll().stream().forEach(libro -> System.out.println(libro.toString()));
     }
 
     private void buscarAutoresVivosEnUnDeterminadoAno() {
@@ -239,9 +241,30 @@ public class MenuPrincipal {
                     listaDeLibrosEncontrados.add(nuevoLibro);
 //                    listaDeLibros.add(nuevoLibro);
                 });
-        listaDeAutoresEncontrados.forEach(autor->autorRepository.save(autor));
-        listaDeTraductorEncontrado.forEach(traductor->traductorRepository.save(traductor));
-        listaDeLibrosEncontrados.forEach(libro -> libroRepository.save(libro));
+        listaDeLibrosEncontrados.forEach(libro -> {
+            try {
+                libroRepository.save(libro);
+            }catch (Exception ignored){
+                System.out.println("Libro ya registrado");
+            }
+
+        });
+        listaDeAutoresEncontrados.forEach(autor->{
+            try {
+                autorRepository.save(autor);
+            }catch (Exception ignored){
+                System.out.println("Autor ya registrado");
+            }
+
+        });
+        listaDeTraductorEncontrado.forEach(traductor->{
+            try {
+                traductorRepository.save(traductor);
+            }catch (Exception ignored){
+                System.out.println("Traductor ya registrado");
+            }
+        });
+
     }
 
     private void agregarMultiplesLibrosALaBaseDeDatos(DatosAPIResponse datosAPIResponse){
