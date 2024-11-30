@@ -8,10 +8,7 @@ import com.alura.literalura.service.ConsumoAPI;
 import com.alura.literalura.service.ConvierteDatos;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -39,28 +36,33 @@ public class MenuPrincipal {
         var opcion = -1;
         while (opcion != 0) {
             var menu = """
-                    1 - Buscar libro por titulo registrados
-                    2 - Ver todos los libros guardados
-                    3 - Listar todos los autores registrados
-                    4 - Buscar autores vivos en un determinado año en la web
-                    5 - Listar libros registrados por idioma
-                    6 - Buscar autores vivos en un determinado año desde la base de datos
-                    7 - Agregar un libro a la base de datos desde la web
-                    8 - Ver todos los traductores guardados
-                   
-                                  
-                    0 - Salir
-                    """;
+                1 - Buscar libro por titulo registrados
+                2 - Ver todos los libros guardados
+                3 - Listar todos los autores registrados
+                4 - Buscar autores vivos en un determinado año en la web
+                5 - Listar libros registrados por idioma
+                6 - Buscar autores vivos en un determinado año desde la base de datos
+                7 - Agregar un libro a la base de datos desde la web
+                8 - Ver todos los traductores guardados
+                0 - Salir
+                """;
             System.out.println(menu);
-            opcion = teclado.nextInt();
-            teclado.nextLine();
+
+            try {
+                opcion = teclado.nextInt();  // Leer opción del usuario
+                teclado.nextLine(); // Limpiar el buffer del teclado
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, ingrese un número válido.");
+                teclado.nextLine(); // Limpiar el buffer en caso de entrada incorrecta
+                continue;  // Continuar con el ciclo sin hacer nada más
+            }
 
             switch (opcion) {
                 case 1:
                     buscarLibroPorTituloEnLaBaseDeDatos();
                     break;
                 case 2:
-                      verTodosLosLibrosGuardados();
+                    verTodosLosLibrosGuardados();
                     break;
                 case 3:
                     listarAutoresRegistrados();
@@ -80,8 +82,6 @@ public class MenuPrincipal {
                 case 8:
                     listarTraductoresRegistrados();
                     break;
-                case 9:
-                    break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
                     break;
@@ -90,7 +90,6 @@ public class MenuPrincipal {
                     break;
             }
         }
-
     }
 
     private void buscarLibroPorTituloEnLaBaseDeDatos() {
