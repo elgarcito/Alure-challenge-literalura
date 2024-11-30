@@ -40,14 +40,13 @@ public class MenuPrincipal {
         while (opcion != 0) {
             var menu = """
                     1 - Buscar libro por titulo registrados
-                    2 - Buscar libros registrados
-                    3 - Listar autores registrados
-                    4 - Buscar autores vivos en un determinado año
+                    2 - Ver todos los libros guardados
+                    3 - Listar todos los autores registrados
+                    4 - Buscar autores vivos en un determinado año en la web
                     5 - Listar libros registrados por idioma
                     6 - Buscar autores vivos en un determinado año desde la base de datos
-                    7 - Agregar un libro a la base de datos
-                    8 - Ver todos los libros guardados
-                    9 - Ver todos los traductores guardados
+                    7 - Agregar un libro a la base de datos desde la web
+                    8 - Ver todos los traductores guardados
                    
                                   
                     0 - Salir
@@ -61,7 +60,7 @@ public class MenuPrincipal {
                     buscarLibroPorTituloEnLaBaseDeDatos();
                     break;
                 case 2:
-//                    buscarEpisodioPorSerie();
+                      verTodosLosLibrosGuardados();
                     break;
                 case 3:
                     listarAutoresRegistrados();
@@ -79,10 +78,9 @@ public class MenuPrincipal {
                     agregarLibroALaBaseDeDatos();
                     break;
                 case 8:
-                    verTodosLosLibrosGuardados();
+                    listarTraductoresRegistrados();
                     break;
                 case 9:
-                   listarTraductoresRegistrados();
                     break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
@@ -190,11 +188,11 @@ public class MenuPrincipal {
     }
 
     private void listarAutoresRegistrados() {
-        listaDeAutores.stream().forEach(autor-> System.out.println(autor));
+        autorRepository.findAll().forEach(autor-> System.out.println(autor));
     }
 
     private void listarTraductoresRegistrados() {
-        listaDeTraductores.stream().forEach(traductor-> System.out.println(traductor));
+        traductorRepository.findAll().stream().forEach(traductor-> System.out.println(traductor));
     }
 
 
